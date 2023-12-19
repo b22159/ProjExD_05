@@ -1,6 +1,7 @@
 import pygame as pg
 import random
 import sys
+import os
 
 pg.init()
 
@@ -19,15 +20,35 @@ player_speed = 5
 obstacle_width, obstacle_height = 50, 50
 obstacle_speed = 5
 
+
 def draw_player(x, y):
     pg.draw.rect(screen, WHITE, [x, y, player_width, player_height])
 def draw_obstacle(x, y):
     pg.draw.rect(screen, RED, [x, y, obstacle_width, obstacle_height])
+
+def drop_gasolines(gasoline):
+        """
+        ガソリンを生成する
+        """
+        deplay = random.randint(1, 5)
+        if len(gasoline) < 10 and random.randint(1, deplay) == 1:
+            x_gass = random.randint(0, WIDTH - 30)
+            y_gass = 0
+            gasoline.append([x_gass, y_gass])
+
+def draw_gasolines(gasoline):
+    for gas in gasoline:
+        img = pg.image.load("fig/oil.PNG")
+        gasoline_img = pg.transform.scale(img, (50, 50))
+        screen.blit(gasoline_img, (gas[0], gas[1]))
+
 def game():
     clock = pg.time.Clock()
 
     obstacles = []
     score = 0
+    global player_x
+    gasoline = []
 
     while True:
         for event in pg.event.get():
@@ -62,6 +83,9 @@ def game():
 
         for obstacle in obstacles:
             draw_obstacle(obstacle[0], obstacle[1])
+        
+        drop_gasolines(gasoline)
+        draw_gasolines(gasoline)
 
         score += 1
 
