@@ -20,6 +20,8 @@ player_speed = 5
 obstacle_width, obstacle_height = 50, 50
 obstacle_speed = 5
 
+gasoline_speed = 3
+
 
 def draw_player(x, y):
     pg.draw.rect(screen, WHITE, [x, y, player_width, player_height])
@@ -30,7 +32,7 @@ def drop_gasolines(gasoline):
         """
         ガソリンを生成する
         """
-        deplay = random.randint(1, 5)
+        deplay = random.randint(1, 1150)
         if len(gasoline) < 10 and random.randint(1, deplay) == 1:
             x_gass = random.randint(0, WIDTH - 30)
             y_gass = 0
@@ -77,6 +79,10 @@ def game():
                 pg.quit()
                 sys.exit()
 
+        drop_gasolines(gasoline)
+        for gas in gasoline:
+            gas[1] += gasoline_speed
+
         screen.fill((0, 0, 0))
 
         draw_player(player_x, player_y)
@@ -84,7 +90,6 @@ def game():
         for obstacle in obstacles:
             draw_obstacle(obstacle[0], obstacle[1])
         
-        drop_gasolines(gasoline)
         draw_gasolines(gasoline)
 
         score += 1
